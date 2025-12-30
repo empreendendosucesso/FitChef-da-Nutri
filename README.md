@@ -1,4 +1,4 @@
-# FitChef da Nutri 🥗
+# FitChef da Nutri   🥗
 
 Uma experiência gourmet para criar receitas saudáveis instantaneamente.
 
@@ -12,9 +12,9 @@ Basta digitar o nome de um prato saudável que você gostaria de criar e o FitCh
 -   **Foco em Saúde**: Receitas elaboradas com ingredientes nutritivos.
 -   **Exportar para PDF**: Salve suas receitas favoritas para acesso offline.
 
-## ⚙️ Deploy no GitHub Pages
+## ⚙️ Deploy no GitHub Pages  
 
-Para publicar seu aplicativo no GitHub Pages, siga estas etapas:
+Para publicar seu aplicativo no GitHub Pages,  siga estas etapas:
 
 1.  **Crie um Secret `API_KEY` no GitHub**:
     *   Vá para o seu repositório no GitHub.
