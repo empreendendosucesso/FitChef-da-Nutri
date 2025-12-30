@@ -1,0 +1,57 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Define a branch que irá acionar o deploy
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use uma versão LTS do Node.js
+
+      - name: Create dist directory and copy files
+        run: |
+          mkdir dist
+          cp index.html dist/
+          cp index.tsx dist/
+          cp App.tsx dist/
+          cp types.ts dist/
+          cp metadata.json dist/
+          mkdir -p dist/components
+          cp components/RecipeCard.tsx dist/components/
+          cp geminiService.ts dist/ # Copia o geminiService.ts para o diretório de build
+
+      - name: Inject API Key into geminiService.ts
+        run: |
+          # Substitui a string literal 'process.env.API_KEY' pelo valor do secret
+          # Importante: O valor da API_KEY será exposto no arquivo JavaScript do cliente após o deploy.
+          # As restrições de HTTP Referrer no console do Google Cloud são CRUCIAIS para a segurança.
+          sed -i "s|process.env.API_KEY|'${{ secrets.API_KEY }}'|g" dist/geminiService.ts
+        env:
+          API_KEY: ${{ secrets.API_KEY }} # Garante que a variável esteja disponível
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'dist' # Caminho para os arquivos estáticos gerados
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
